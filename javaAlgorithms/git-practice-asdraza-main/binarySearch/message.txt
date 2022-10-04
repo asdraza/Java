@@ -1,0 +1,71 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+public class practical4 {
+
+    public static <T extends Comparable<T>> int binarySearch(final T[] array, final T elem, final Comparator<T> comparator) {
+        // numerical ordering
+        int a=0;
+        int b = array.length-1;
+        while (a<=b) {
+            int c = a + (b-a) / 2;
+            // if the element is consisted in the middle
+            if (comparator.compare(array[c], elem) == 0) {return c;}
+            if (comparator.compare(array[c], elem) < 0) {a = c+1;}
+            else {b = c-1;}
+        }
+        return -1;
+    }
+
+
+    private static <T extends Comparable<T>> int BSRecursive(T[] array, int a, int b, T elem, Comparator<T> comparator) {
+        if (b>=a) {
+            int c = a + (b-a)/2;
+            // if the element is consisted in the middle
+            if (comparator.compare(array[c],elem) == 0) {return c;}
+            // if the element is smaller than middle, it can only be contained in the left subarray
+            else if (comparator.compare(array[c],elem) > 0) {return BSRecursive(array, b, c-1, elem, comparator);}
+            // the element can only be contained in right subarray
+            else {return BSRecursive(array, c+1, b, elem , comparator);}
+        }
+        return -1; // element is not contained in the array
+    }
+
+
+    public static <T extends Comparable<T>> int binarySearchRecursive(final T[] array, final T elem, final Comparator<T> comparator) {
+        //lexicographical
+        int a=0;
+        int b = array.length-1;
+        return BSRecursive(array, a, b, elem, comparator);
+    }
+
+
+    public static <T extends Comparable<T>> int binarySearch(final List<T> list, final T elem, final Comparator<T> comparator){
+        int a=0;
+        int b = list.size()-1;
+        while (a<=b) {
+            int c = a + (b-a) / 2;
+            if (comparator.compare(list.get(c), elem) == 0) {return c;}
+            if (comparator.compare(list.get(c), elem) < 0) {a = c+1;}
+            else {b = c-1;}
+        }
+        return -1;
+    }
+
+    public static void main(String[] args)
+    {
+        String[] arr= {"1", "2", "9", "10"};
+        Integer elem = 9;
+
+        ArrayList<Integer> testArray = new ArrayList<Integer>();
+        testArray.add(1);
+        testArray.add(2);
+        testArray.add(9);
+        testArray.add(10);
+
+
+        System.out.println(binarySearch(testArray,elem,Comparator.comparing(Integer::intValue)));
+
+    }
+}
